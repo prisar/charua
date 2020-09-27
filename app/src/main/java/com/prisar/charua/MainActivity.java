@@ -2,6 +2,7 @@ package com.prisar.charua;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int PICK_IMAGE = 1;
+
     private static final String VIDEO_SAMPLE = "tacoma_narrows";
     private VideoView mVideoView;
 
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(PLAYBACK_TIME, mVideoView.getCurrentPosition());
+//        outState.putInt(PLAYBACK_TIME, mVideoView.getCurrentPosition());
     }
 
     private void releasePlayer() {
@@ -50,39 +53,53 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        initializePlayer();
+//        initializePlayer();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        releasePlayer();
+//        releasePlayer();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            mVideoView.pause();
-        }
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+//            mVideoView.pause();
+//        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
 
-        mVideoView = findViewById(R.id.videoview);
+//        mVideoView = findViewById(R.id.videoview);
+//
+//        MediaController controller = new MediaController(this);
+//        controller.setMediaPlayer(mVideoView);
+//
+//        mVideoView.setMediaController(controller);
+//
+//        if (savedInstanceState != null) {
+//            mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
+//        }
 
-        MediaController controller = new MediaController(this);
-        controller.setMediaPlayer(mVideoView);
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+    }
 
-        mVideoView.setMediaController(controller);
-
-        if (savedInstanceState != null) {
-            mCurrentPosition = savedInstanceState.getInt(PLAYBACK_TIME);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE) {
+            //TODO: action
         }
     }
 }
